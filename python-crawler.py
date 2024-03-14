@@ -16,17 +16,20 @@ with open('ptt-articles.txt','w',encoding='utf-8') as f:
         print('本頁的url為' + url)
         url='https://www.ptt.cc' + u[1]['href']
         for art in arts:
-            titl = art.find('div', class_='title').getText().strip()
-            auth = art.find('div', class_='author').getText()
-            link = 'https://www.ptt.cc' + art.find('div', class_='title').a['href']
-            article={
-                'title' : titl,
-                'author' : auth,
-                'link' : link
-            }
-            article_list.append(article)
-            print(f' title: {titl}\n author: {auth}\n link: {link}')
-            f.write(f' title: {titl}\n author: {auth}\n link: {link}'+'\n')
+            try:
+                title = art.find('div', class_='title').getText().strip()
+                author = art.find('div', class_='author').getText()
+                href = 'https://www.ptt.cc' + art.find('div', class_='title').a['href']
+                article={
+                    'title' : title,
+                    'author' : author,
+                    'link' : href
+                }
+                article_list.append(article)
+                print(f' title: {title}\n author: {author}\n link: {href}')
+                f.write(f' title: {title}\n author: {author}\n link: {href}'+'\n')
+            except:
+                print('Not Found')
 
 with open('ptt-articles.json','w',encoding='utf-8') as f:
     json.dump(article_list, f, indent=2, sort_keys=True, ensure_ascii=False)
